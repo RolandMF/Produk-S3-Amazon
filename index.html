@@ -1,0 +1,142 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>S3 Storage Simulator</title>
+  <link rel="stylesheet" href="style.css">
+  <link href="https://fonts.googleapis.com/css2?family=Press+Start+2P&display=swap" rel="stylesheet">
+</head>
+<body>
+
+
+  <nav>
+    <span class="logo">[ S3 ]</span>
+    <span class="nav-title">Simple Storage Service</span>
+    <span class="nav-region">📡 Region: N.Maranatha</span>
+  </nav>
+
+
+  <div id="view-buckets" class="main">
+
+    <div class="page-header">
+      <h2>// BUCKET LIST</h2>
+      <p class="subtitle">Buat dan kelola bucket penyimpanan kamu</p>
+    </div>
+
+
+    <div class="stats">
+      <div class="stat">
+        <div class="label">TOTAL BUCKETS</div>
+        <div class="value" id="stat-buckets">0</div>
+      </div>
+      <div class="stat">
+        <div class="label">TOTAL OBJECTS</div>
+        <div class="value" id="stat-objects">0</div>
+      </div>
+    </div>
+
+
+    <div class="card">
+      <div class="card-header">
+        <h3>+ CREATE BUCKET</h3>
+      </div>
+      <div class="card-body">
+        <div class="form-row">
+          <div class="form-group">
+            <label>BUCKET NAME</label>
+            <input type="text" id="s3-name" placeholder="e.g. my-app-bucket" />
+          </div>
+          <div class="form-group">
+            <label>ACCESS</label>
+            <select id="s3-access">
+              <option>Private</option>
+              <option>Public Read</option>
+            </select>
+          </div>
+        </div>
+        <button class="btn btn-primary" onclick="createBucket()">▶ CREATE</button>
+      </div>
+    </div>
+
+
+    <div class="card">
+      <div class="card-header">
+        <h3>📦 BUCKETS</h3>
+      </div>
+      <div class="table-wrap">
+        <table>
+          <thead>
+            <tr>
+              <th>NAME</th>
+              <th>ACCESS</th>
+              <th>OBJECTS</th>
+              <th>CREATED</th>
+              <th>ACTIONS</th>
+            </tr>
+          </thead>
+          <tbody id="s3-tbody">
+            <tr>
+              <td colspan="5" class="empty">No buckets yet. Create one above!</td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+    </div>
+
+  </div>
+
+ 
+  <div id="view-detail" class="main" style="display:none">
+
+    <div class="page-header">
+      <span class="back-link" onclick="closeDetail()">◀ BACK</span>
+      <h2 id="detail-title">// BUCKET: —</h2>
+      <p class="subtitle" id="detail-access">Access: —</p>
+    </div>
+
+
+    <div class="card">
+      <div class="card-header">
+        <h3>⬆ UPLOAD OBJECT</h3>
+      </div>
+      <div class="card-body">
+        <div class="form-row">
+          <div class="form-group">
+            <label>NAMA FILE</label>
+            <input type="text" id="upload-name" placeholder="e.g. foto_kucing.jpg" />
+          </div>
+          <div class="form-group">
+            <label>TIPE FILE</label>
+            <select id="upload-type">
+              <option value="video">VIDEO (.mp4 / .mov)</option>
+              <option value="image">IMAGE (.png / .jpg)</option>
+              <option value="document">DOCUMENT (.pdf / .docx)</option>
+              <option value="audio">AUDIO (.mp3 / .wav)</option>
+              <option value="other">OTHER</option>
+            </select>
+          </div>
+        </div>
+        <button class="btn btn-primary" onclick="uploadFile()">▶ UPLOAD</button>
+      </div>
+    </div>
+
+
+    <div class="card">
+      <div class="card-header">
+        <h3>🗂 OBJECTS</h3>
+        <span id="detail-count" class="count-badge">0 objects</span>
+      </div>
+      <div id="file-list">
+        <div class="empty" id="file-empty">Bucket masih kosong!</div>
+      </div>
+    </div>
+
+  </div>
+
+
+  <div id="notif"></div>
+
+  <script src="script.js"></script>
+</body>
+</html>
