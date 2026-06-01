@@ -1,4 +1,3 @@
-<!-- 2572017 - 2572053 -->
 <!DOCTYPE html>
 <html lang="id">
 <head>
@@ -10,132 +9,216 @@
 </head>
 <body>
 
-
+  <!-- NAVBAR -->
   <nav>
     <span class="logo">[ S3 ]</span>
     <span class="nav-title">Simple Storage Service</span>
     <span class="nav-region">📡 Region: N.Maranatha</span>
   </nav>
 
+  <div class="layout">
 
-  <div id="view-buckets" class="main">
+    <!-- ===== SIDEBAR ===== -->
+    <aside class="sidebar">
+      <div class="sidebar-label">MAIN MENU</div>
+      <a class="nav-item active" onclick="goPage('dashboard', this)">
+        🏠 DASHBOARD
+      </a>
+      <a class="nav-item" onclick="goPage('buckets', this)">
+        📦 BUCKETS
+      </a>
+      <a class="nav-item" onclick="goPage('activity', this)">
+        📋 ACTIVITY LOG
+      </a>
 
-    <div class="page-header">
-      <h2>// BUCKET LIST</h2>
-      <p class="subtitle">Buat dan kelola bucket penyimpanan kamu</p>
-    </div>
+      <div class="sidebar-label" style="margin-top:20px">INFO</div>
+      <div class="sidebar-info">PT Roll Mahal</div>
+      <div class="sidebar-info">v1.0.0</div>
+    </aside>
 
+    <!-- ===== CONTENT ===== -->
+    <div class="content">
 
-    <div class="stats">
-      <div class="stat">
-        <div class="label">TOTAL BUCKETS</div>
-        <div class="value" id="stat-buckets">0</div>
-      </div>
-      <div class="stat">
-        <div class="label">TOTAL OBJECTS</div>
-        <div class="value" id="stat-objects">0</div>
-      </div>
-    </div>
+      <!-- PAGE: DASHBOARD -->
+      <div id="page-dashboard" class="page active">
+        <div class="page-header">
+          <h2>// DASHBOARD</h2>
+          <p class="subtitle">Overview seluruh resource penyimpanan</p>
+        </div>
 
-
-    <div class="card">
-      <div class="card-header">
-        <h3>+ CREATE BUCKET</h3>
-      </div>
-      <div class="card-body">
-        <div class="form-row">
-          <div class="form-group">
-            <label>BUCKET NAME</label>
-            <input type="text" id="s3-name" placeholder="e.g. my-app-bucket" />
+        <div class="stats">
+          <div class="stat">
+            <div class="label">TOTAL BUCKETS</div>
+            <div class="value" id="stat-buckets">0</div>
           </div>
-          <div class="form-group">
-            <label>ACCESS</label>
-            <select id="s3-access">
-              <option>Private</option>
-              <option>Public Read</option>
-            </select>
+          <div class="stat">
+            <div class="label">TOTAL OBJECTS</div>
+            <div class="value" id="stat-objects">0</div>
+          </div>
+          <div class="stat">
+            <div class="label">STORAGE USED</div>
+            <div class="value" id="stat-storage">0 KB</div>
+          </div>
+          <div class="stat">
+            <div class="label">ACTIVITIES</div>
+            <div class="value" id="stat-activities">0</div>
           </div>
         </div>
-        <button class="btn btn-primary" onclick="createBucket()">▶ CREATE</button>
-      </div>
-    </div>
 
-
-    <div class="card">
-      <div class="card-header">
-        <h3>📦 BUCKETS</h3>
-      </div>
-      <div class="table-wrap">
-        <table>
-          <thead>
-            <tr>
-              <th>NAME</th>
-              <th>ACCESS</th>
-              <th>OBJECTS</th>
-              <th>CREATED</th>
-              <th>ACTIONS</th>
-            </tr>
-          </thead>
-          <tbody id="s3-tbody">
-            <tr>
-              <td colspan="5" class="empty">No buckets yet. Create one above!</td>
-            </tr>
-          </tbody>
-        </table>
-      </div>
-    </div>
-
-  </div>
-
- 
-  <div id="view-detail" class="main" style="display:none">
-
-    <div class="page-header">
-      <span class="back-link" onclick="closeDetail()">◀ BACK</span>
-      <h2 id="detail-title">// BUCKET: —</h2>
-      <p class="subtitle" id="detail-access">Access: —</p>
-    </div>
-
-
-    <div class="card">
-      <div class="card-header">
-        <h3>⬆ UPLOAD OBJECT</h3>
-      </div>
-      <div class="card-body">
-        <div class="form-row">
-          <div class="form-group">
-            <label>NAMA FILE</label>
-            <input type="text" id="upload-name" placeholder="e.g. foto_kucing.jpg" />
+        <div class="card">
+          <div class="card-header">
+            <h3>📋 RECENT ACTIVITY</h3>
           </div>
-          <div class="form-group">
-            <label>TIPE FILE</label>
-            <select id="upload-type">
-              <option value="video">VIDEO (.mp4 / .mov)</option>
-              <option value="image">IMAGE (.png / .jpg)</option>
-              <option value="document">DOCUMENT (.pdf / .docx)</option>
-              <option value="audio">AUDIO (.mp3 / .wav)</option>
-              <option value="other">OTHER</option>
-            </select>
+          <div class="table-wrap">
+            <table>
+              <thead>
+                <tr><th>ACTION</th><th>TARGET</th><th>DETAIL</th><th>TIME</th></tr>
+              </thead>
+              <tbody id="activity-mini-tbody">
+                <tr><td colspan="4" class="empty">Belum ada aktivitas.</td></tr>
+              </tbody>
+            </table>
           </div>
         </div>
-        <button class="btn btn-primary" onclick="uploadFile()">▶ UPLOAD</button>
       </div>
+
+      <!-- PAGE: BUCKETS -->
+      <div id="page-buckets" class="page">
+
+        <!-- VIEW: BUCKET LIST -->
+        <div id="view-buckets">
+          <div class="page-header">
+            <h2>// BUCKET LIST</h2>
+            <p class="subtitle">Buat dan kelola bucket penyimpanan kamu</p>
+          </div>
+
+          <!-- FORM CREATE BUCKET -->
+          <div class="card">
+            <div class="card-header"><h3>+ CREATE BUCKET</h3></div>
+            <div class="card-body">
+              <div class="form-row">
+                <div class="form-group">
+                  <label>BUCKET NAME</label>
+                  <input type="text" id="s3-name" placeholder="e.g. my-app-bucket" />
+                </div>
+                <div class="form-group">
+                  <label>ACCESS</label>
+                  <select id="s3-access">
+                    <option>Private</option>
+                    <option>Public Read</option>
+                  </select>
+                </div>
+              </div>
+              <button class="btn btn-primary" onclick="createBucket()">▶ CREATE</button>
+            </div>
+          </div>
+
+          <!-- TABEL BUCKET + SEARCH -->
+          <div class="card">
+            <div class="card-header">
+              <h3>📦 BUCKETS</h3>
+              <input
+                type="text"
+                id="search-bucket"
+                class="search-input"
+                placeholder="🔍 SEARCH..."
+                oninput="renderBuckets()"
+              />
+            </div>
+            <div class="table-wrap">
+              <table>
+                <thead>
+                  <tr>
+                    <th>NAME</th>
+                    <th>ACCESS</th>
+                    <th>OBJECTS</th>
+                    <th>SIZE</th>
+                    <th>CREATED</th>
+                    <th>ACTIONS</th>
+                  </tr>
+                </thead>
+                <tbody id="s3-tbody">
+                  <tr><td colspan="6" class="empty">No buckets yet. Create one above!</td></tr>
+                </tbody>
+              </table>
+            </div>
+          </div>
+        </div>
+
+        <!-- VIEW: DETAIL ISI BUCKET -->
+        <div id="view-detail" style="display:none">
+          <div class="page-header">
+            <span class="back-link" onclick="closeDetail()">◀ BACK</span>
+            <h2 id="detail-title">// BUCKET: —</h2>
+            <p class="subtitle" id="detail-access">Access: —</p>
+          </div>
+
+          <!-- FORM UPLOAD -->
+          <div class="card">
+            <div class="card-header"><h3>⬆ UPLOAD OBJECT</h3></div>
+            <div class="card-body">
+              <div class="form-row">
+                <div class="form-group">
+                  <label>NAMA FILE</label>
+                  <input type="text" id="upload-name" placeholder="e.g. foto_kucing.jpg" />
+                </div>
+                <div class="form-group">
+                  <label>TIPE FILE</label>
+                  <select id="upload-type">
+                    <option value="video">VIDEO (.mp4 / .mov)</option>
+                    <option value="image">IMAGE (.png / .jpg)</option>
+                    <option value="document">DOCUMENT (.pdf / .docx)</option>
+                    <option value="audio">AUDIO (.mp3 / .wav)</option>
+                    <option value="other">OTHER</option>
+                  </select>
+                </div>
+              </div>
+              <button class="btn btn-primary" onclick="uploadFile()">▶ UPLOAD</button>
+            </div>
+          </div>
+
+          <!-- DAFTAR FILE -->
+          <div class="card">
+            <div class="card-header">
+              <h3>🗂 OBJECTS</h3>
+              <span id="detail-count" class="count-badge">0 objects</span>
+            </div>
+            <div id="file-list">
+              <div class="empty">Bucket masih kosong!</div>
+            </div>
+          </div>
+        </div>
+
+      </div>
+
+      <!-- PAGE: ACTIVITY LOG -->
+      <div id="page-activity" class="page">
+        <div class="page-header">
+          <h2>// ACTIVITY LOG</h2>
+          <p class="subtitle">Semua riwayat aksi yang pernah dilakukan</p>
+        </div>
+        <div class="card">
+          <div class="card-header">
+            <h3>📋 FULL LOG</h3>
+            <button class="btn-delete" onclick="clearActivity()">🗑 CLEAR ALL</button>
+          </div>
+          <div class="table-wrap">
+            <table>
+              <thead>
+                <tr><th>#</th><th>ACTION</th><th>TARGET</th><th>DETAIL</th><th>TIME</th></tr>
+              </thead>
+              <tbody id="activity-tbody">
+                <tr><td colspan="5" class="empty">Belum ada aktivitas.</td></tr>
+              </tbody>
+            </table>
+          </div>
+        </div>
+      </div>
+
     </div>
-
-
-    <div class="card">
-      <div class="card-header">
-        <h3>🗂 OBJECTS</h3>
-        <span id="detail-count" class="count-badge">0 objects</span>
-      </div>
-      <div id="file-list">
-        <div class="empty" id="file-empty">Bucket masih kosong!</div>
-      </div>
-    </div>
-
   </div>
 
-
+  <!-- NOTIFIKASI -->
   <div id="notif"></div>
 
   <script src="script.js"></script>
