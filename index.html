@@ -30,6 +30,9 @@
       <a class="nav-item" onclick="goPage('activity', this)">
         📋 ACTIVITY LOG
       </a>
+      <a class="nav-item" onclick="goPage('quiz', this)">
+        🎮 KNOWLEDGE CHECK
+      </a>
 
       <div class="sidebar-label" style="margin-top:20px">INFO</div>
       <div class="sidebar-info">PT Roll Mahal</div>
@@ -215,10 +218,68 @@
         </div>
       </div>
 
+      <!-- PAGE: QUIZ -->
+      <div id="page-quiz" class="page">
+        <div class="page-header">
+          <h2>// KNOWLEDGE CHECK</h2>
+          <p class="subtitle">Uji pemahamanmu tentang Amazon S3</p>
+        </div>
+        <div class="quiz-wrapper">
+
+          <!-- START SCREEN -->
+          <div id="quiz-start">
+            <div class="card">
+              <div class="card-header"><h3>🎮 QUIZ S3</h3></div>
+              <div class="card-body quiz-center">
+                <div class="quiz-big-icon">❓</div>
+                <p class="quiz-info-title">10 Pertanyaan</p>
+                <p class="quiz-info-sub">Jawab semua pertanyaan tentang Amazon S3.<br>Setiap jawaban benar bernilai 10 poin.</p>
+                <button class="btn btn-primary" onclick="startQuiz()">▶ MULAI QUIZ</button>
+              </div>
+            </div>
+          </div>
+
+          <!-- QUESTION SCREEN -->
+          <div id="quiz-question" style="display:none">
+            <div class="card">
+              <div class="card-header">
+                <h3 id="quiz-progress-label">SOAL 1 / 10</h3>
+                <span class="count-badge" id="quiz-score-live">SKOR: 0</span>
+              </div>
+              <div class="card-body">
+                <div class="quiz-progress-track">
+                  <div id="quiz-bar" class="quiz-progress-fill" style="width:10%"></div>
+                </div>
+                <p id="quiz-q-text" class="quiz-question-text"></p>
+                <div id="quiz-options"></div>
+                <div id="quiz-feedback" class="quiz-feedback" style="display:none"></div>
+                <div style="margin-top:20px; text-align:right">
+                  <button id="quiz-next-btn" class="btn btn-primary" onclick="nextQuestion()" style="display:none">NEXT ▶</button>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <!-- RESULT SCREEN -->
+          <div id="quiz-result" style="display:none">
+            <div class="card">
+              <div class="card-header"><h3>🏆 HASIL QUIZ</h3></div>
+              <div class="card-body quiz-center" style="padding:36px 20px">
+                <div id="res-emoji" class="quiz-big-icon"></div>
+                <div id="res-score" class="quiz-result-score"></div>
+                <div id="res-label" class="quiz-result-label"></div>
+                <div id="res-msg" class="quiz-result-msg"></div>
+                <button class="btn btn-primary" onclick="resetQuiz()">↺ COBA LAGI</button>
+              </div>
+            </div>
+          </div>
+
+        </div>
+      </div>
+
     </div>
   </div>
 
-  <!-- NOTIFIKASI -->
   <div id="notif"></div>
 
   <script src="script.js"></script>
