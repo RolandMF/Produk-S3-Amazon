@@ -491,8 +491,8 @@ tr:hover td {
    QUIZ
 =========================== */
 .quiz-wrapper {
-  max-width: 520px;
-  margin-left: auto;
+  max-width: 800px;
+  margin: 0 auto;
 }
 
 .quiz-center {
