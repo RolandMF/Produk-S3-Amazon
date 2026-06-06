@@ -321,8 +321,158 @@ function deleteFile(index) {
 }
 
 // ===========================
-// RENDER DAFTAR FILE
+// QUIZ
 // ===========================
+const quizData = [
+  {
+    q: 'Apa kepanjangan dari S3?',
+    opts: ['Simple Server Storage', 'Simple Storage Service', 'Secure Storage System', 'Scalable Storage Service'],
+    a: 1
+  },
+  {
+    q: 'Berapa durability yang ditawarkan Amazon S3?',
+    opts: ['99.9%', '99.99%', '99.999999999%', '100%'],
+    a: 2
+  },
+  {
+    q: 'Apa nama wadah utama untuk menyimpan objek di S3?',
+    opts: ['Container', 'Folder', 'Bucket', 'Volume'],
+    a: 2
+  },
+  {
+    q: 'Berapa ukuran maksimal satu objek yang bisa disimpan di S3?',
+    opts: ['1 GB', '500 MB', '10 TB', '5 TB'],
+    a: 3
+  },
+  {
+    q: 'Storage class mana yang paling cocok untuk arsip jangka panjang dengan biaya termurah?',
+    opts: ['S3 Standard', 'S3 Standard-IA', 'S3 Glacier', 'S3 One Zone-IA'],
+    a: 2
+  },
+  {
+    q: 'Apa fungsi "Key" dalam Amazon S3?',
+    opts: ['Password untuk mengakses bucket', 'Nama unik setiap objek dalam bucket', 'ID akun AWS pengguna', 'Kunci enkripsi data'],
+    a: 1
+  },
+  {
+    q: 'Tahun berapa Amazon S3 pertama kali diluncurkan?',
+    opts: ['2004', '2008', '2010', '2006'],
+    a: 3
+  },
+  {
+    q: 'Protocol apa yang digunakan untuk mengakses S3 melalui internet?',
+    opts: ['FTP / SFTP', 'HTTP / HTTPS', 'SSH', 'TCP / UDP'],
+    a: 1
+  },
+  {
+    q: 'Availability SLA untuk S3 Standard adalah?',
+    opts: ['99.5%', '99.9%', '99.99%', '100%'],
+    a: 2
+  },
+  {
+    q: 'Storage class mana yang secara otomatis memindahkan data antar tier berdasarkan pola akses?',
+    opts: ['S3 Standard-IA', 'S3 One Zone-IA', 'S3 Intelligent-Tiering', 'S3 Glacier'],
+    a: 2
+  }
+];
+
+let quizIndex  = 0;
+let quizScore  = 0;
+let quizAnswered = false;
+const optLabels  = ['A', 'B', 'C', 'D'];
+
+function startQuiz() {
+  quizIndex    = 0;
+  quizScore    = 0;
+  quizAnswered = false;
+  document.getElementById('quiz-start').style.display    = 'none';
+  document.getElementById('quiz-question').style.display = 'block';
+  document.getElementById('quiz-result').style.display   = 'none';
+  showQuestion();
+}
+
+function showQuestion() {
+  const q = quizData[quizIndex];
+  quizAnswered = false;
+
+  document.getElementById('quiz-progress-label').textContent = 'SOAL ' + (quizIndex + 1) + ' / 10';
+  document.getElementById('quiz-score-live').textContent     = 'SKOR: ' + quizScore;
+  document.getElementById('quiz-bar').style.width            = ((quizIndex + 1) * 10) + '%';
+  document.getElementById('quiz-q-text').textContent         = (quizIndex + 1) + '. ' + q.q;
+
+  document.getElementById('quiz-options').innerHTML = q.opts.map((opt, i) => `
+    <button class="quiz-option" id="opt-${i}" onclick="answerQuestion(${i})">
+      <span class="quiz-opt-label">${optLabels[i]}</span>
+      <span>${opt}</span>
+    </button>`).join('');
+
+  document.getElementById('quiz-feedback').style.display = 'none';
+  document.getElementById('quiz-feedback').className     = 'quiz-feedback';
+  document.getElementById('quiz-next-btn').style.display = 'none';
+}
+
+function answerQuestion(selected) {
+  if (quizAnswered) return;
+  quizAnswered = true;
+
+  const correct   = quizData[quizIndex].a;
+  const isCorrect = selected === correct;
+  if (isCorrect) quizScore += 10;
+
+  // Warnai pilihan
+  quizData[quizIndex].opts.forEach((_, i) => {
+    const btn = document.getElementById('opt-' + i);
+    btn.disabled = true;
+    if (i === correct)                btn.classList.add('quiz-opt-correct');
+    else if (i === selected && !isCorrect) btn.classList.add('quiz-opt-wrong');
+  });
+
+  // Tampilkan feedback
+  const fb = document.getElementById('quiz-feedback');
+  fb.style.display = 'block';
+  if (isCorrect) {
+    fb.className  = 'quiz-feedback correct';
+    fb.textContent = '✓ BENAR! +10 POIN';
+  } else {
+    fb.className  = 'quiz-feedback wrong';
+    fb.textContent = '✗ SALAH! Jawaban: ' + optLabels[correct] + '. ' + quizData[quizIndex].opts[correct];
+  }
+
+  document.getElementById('quiz-score-live').textContent = 'SKOR: ' + quizScore;
+
+  const nextBtn = document.getElementById('quiz-next-btn');
+  nextBtn.style.display = 'inline-block';
+  nextBtn.textContent   = quizIndex < 9 ? 'NEXT ▶' : 'LIHAT HASIL ▶';
+}
+
+function nextQuestion() {
+  quizIndex++;
+  if (quizIndex >= 10) showResult();
+  else showQuestion();
+}
+
+function showResult() {
+  document.getElementById('quiz-question').style.display = 'none';
+  document.getElementById('quiz-result').style.display   = 'block';
+
+  document.getElementById('res-score').textContent = quizScore + ' / 100';
+
+  let emoji, label, msg;
+  if      (quizScore === 100) { emoji = '🏆'; label = 'PERFECT SCORE!';  msg = 'Luar biasa! Kamu menguasai semua materi S3.'; }
+  else if (quizScore >= 80)   { emoji = '🎉'; label = 'EXCELLENT!';       msg = 'Hampir sempurna! Sedikit lagi jadi master S3.'; }
+  else if (quizScore >= 60)   { emoji = '👍'; label = 'GOOD JOB!';        msg = 'Lumayan! Tapi masih ada beberapa yang perlu dipelajari.'; }
+  else if (quizScore >= 40)   { emoji = '📚'; label = 'KEEP LEARNING!';   msg = 'Perlu belajar lebih banyak lagi. Coba lagi ya!'; }
+  else                         { emoji = '💪'; label = 'SEMANGAT!';        msg = 'Jangan menyerah! Pelajari ulang materi S3 dari awal.'; }
+
+  document.getElementById('res-emoji').textContent = emoji;
+  document.getElementById('res-label').textContent = label;
+  document.getElementById('res-msg').textContent   = msg;
+}
+
+function resetQuiz() {
+  document.getElementById('quiz-result').style.display = 'none';
+  document.getElementById('quiz-start').style.display  = 'block';
+}
 function renderFiles() {
   const bucket  = buckets.find(b => b.name === activeBucket);
   const listEl  = document.getElementById('file-list');
