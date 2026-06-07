@@ -33,6 +33,9 @@
       <a class="nav-item" onclick="goPage('quiz', this)">
         🎮 KNOWLEDGE CHECK
       </a>
+      <a class="nav-item" onclick="goPage('s3-info', this)">
+        📑 WHAT IS S3?
+      </a>
 
       <div class="sidebar-label" style="margin-top:20px">INFO</div>
       <div class="sidebar-info">PT Roll Mahal</div>
@@ -276,7 +279,115 @@
 
         </div>
       </div>
+      <div id="page-s3-info" class="page">
+        <div class="page-header">
+          <h2>// WHAT IS AMAZON S3?</h2>
+          <p class="subtitle">Dokumentasi & Spesifikasi Core Cloud Storage</p>
+        </div>
 
+        <div class="form-row">
+          <div class="card" style="flex: 2; margin-bottom: 0;">
+            <div class="card-header"><h3>💡 APA ITU AMAZON S3?</h3></div>
+            <div class="card-body study-body">
+              <p><b>Amazon S3 (Simple Storage Service)</b> adalah layanan <i>Object Storage</i> berbasis cloud yang dikelola penuh oleh AWS. Layanan ini dirancang untuk menyimpan, mengamankan, dan mengambil data dalam jumlah berapa pun dari mana saja di internet.</p>
+              <p>Berbeda dengan sistem file tradisional (Block Storage), S3 menyimpan data sebagai <b>Objek</b> di dalam wadah yang disebut <b>Bucket</b>.</p>
+            </div>
+          </div>
+
+          <div class="card" style="flex: 1; margin-bottom: 0;">
+            <div class="card-header"><h3>📅 LAUNCH DATE</h3></div>
+            <div class="card-body study-body" style="text-align: center; padding-top: 24px;">
+              <p style="font-size: 11px; color: #2563eb; margin-bottom: 4px;">RELEASED ON</p>
+              <h4 style="font-size: 12px; margin: 0; border: none; padding: 0; display: block;">14 MARET 2006</h4>
+              <p style="margin-top: 10px; color: #64748b;">Menjadi salah satu layanan fondasi pertama dari AWS.</p>
+            </div>
+          </div>
+        </div>
+
+        <div class="card">
+          <div class="card-header"><h3>⚙️ CORE SPECIFICATIONS</h3></div>
+          <div class="card-body study-body">
+            <div class="form-row" style="gap: 16px;">
+              <div class="study-box" style="flex: 1; margin-bottom: 0;">
+                <h4>📦 Ukuran Objek (Object Size)</h4>
+                <ul>
+                  <li><b>Ukuran Minimum:</b> 0 Bytes.</li>
+                  <li><b>Ukuran Maksimum:</b> 5 Terabytes (TB) untuk satu objek tunggal.</li>
+                  <li><b>Batas Sekali Upload:</b> Operasi tunggal PUT maksimal menerima 5 Gigabytes (GB). Untuk file di atas 5 GB, wajib menggunakan <i>Multipart Upload API</i>.</li>
+                </ul>
+              </div>
+
+              <div class="study-box" style="flex: 1; margin-bottom: 0;">
+                <h4>🔑 Apa itu "Key"?</h4>
+                <ul>
+                  <li><b>Key</b> adalah nama unik atau pengenal (identifier) global bagi sebuah objek di dalam sebuah Bucket.</li>
+                  <li>Setiap objek di dalam S3 dapat diakses secara unik melalui kombinasi dari: <br><span style="color:#2563eb;">Bucket Name + Object Key + Version ID</span>.</li>
+                </ul>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <div class="form-row">
+          <div class="card" style="flex: 1; margin-bottom: 0;">
+            <div class="card-header"><h3>🛡️ DURABILITY</h3></div>
+            <div class="card-body study-body">
+              <div class="study-box" style="text-align: center; background: #ecfdf5; border-color: #34d399;">
+                <h3 style="font-size: 16px; color: #059669; margin-bottom: 8px;">99.999999999%</h3>
+                <p style="margin: 0; font-weight: bold; color: #065f46;">(11 Sembilan / 11 Nines)</p>
+              </div>
+              <p style="margin-top: 10px;">Didesain untuk memberikan ketahanan data yang ekstrem dengan mereplikasi objek secara otomatis ke minimal 3 Availability Zones (AZ) yang terpisah di dalam satu Region.</p>
+            </div>
+          </div>
+
+          <div class="card" style="flex: 1; margin-bottom: 0;">
+            <div class="card-header"><h3>🌐 AVAILABILITY SLA</h3></div>
+            <div class="card-body study-body">
+              <p>Tingkat ketersediaan operasional (uptime) dijamin oleh AWS melalui <b>Service Level Agreement (SLA)</b> yang bervariasi bergantung tipe kelas penyimpanan:</p>
+              <ul>
+                <li><b>S3 Standard:</b> SLA Komitmen &gt; 99.9% (Didesain untuk 99.99% ketersediaan).</li>
+                <li><b>S3 Standard-IA:</b> SLA Komitmen &gt; 99.0%.</li>
+              </ul>
+            </div>
+          </div>
+        </div>
+
+        <div class="card">
+          <div class="card-header"><h3>🗂️ STORAGE CLASSES & ACCESS METHOD</h3></div>
+          <div class="card-body study-body">
+            <h4>⚡ Jenis-Jenis Penyimpanan (Storage Classes):</h4>
+            <div class="form-row" style="gap: 12px; margin-bottom: 14px;">
+              <div style="flex: 1;">
+                <ul>
+                  <li><b>S3 Standard:</b> Akses cepat, frekuensi tinggi (default).</li>
+                  <li><b>S3 Intelligent-Tiering:</b> Otomatis menghemat biaya berdasarkan pola akses data.</li>
+                  <li><b>S3 Standard-IA:</b> Untuk data jarang diakses tapi butuh cepat saat diperlukan.</li>
+                  <li><b>S3 One Zone-IA:</b> Data jarang diakses dan disimpan hanya di 1 AZ (lebih murah).</li>
+                </ul>
+              </div>
+              <div style="flex: 1;">
+                <ul>
+                  <li><b>S3 Glacier Instant Retrieval:</b> Arsip dengan akses hitungan milidetik.</li>
+                  <li><b>S3 Glacier Flexible Retrieval:</b> Arsip berkala (akses 1 menit hingga 5 jam).</li>
+                  <li><b>S3 Glacier Deep Archive:</b> Arsip jangka panjang (akses 12 jam, paling murah).</li>
+                </ul>
+              </div>
+            </div>
+
+            <h4>🛠️ Bagaimana Menggunakan & Mengakses S3?</h4>
+            <p>Amazon S3 dapat digunakan dengan membuat <b>Bucket</b> terlebih dahulu, lalu mengunggah file ke dalamnya. Kamu bisa mengelolanya via:</p>
+            <ul>
+              <li>AWS Management Console (Antarmuka Web), AWS CLI (Terminal/Command Line), dan AWS SDK (Kode Program).</li>
+            </ul>
+
+            <div class="study-box study-box-info">
+              <h4>🌐 Protokol Akses Internet</h4>
+              <p>Seluruh objek di Amazon S3 diekspos sebagai RESTful endpoint. Protokol standar internet yang digunakan untuk berinteraksi, mengirim (upload), dan mengambil (download) objek adalah <b>HTTP</b> dan <b>HTTPS</b>.</p>
+            </div>
+          </div>
+        </div>
+
+      </div>
     </div>
   </div>
 
